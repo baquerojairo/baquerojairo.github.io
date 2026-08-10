@@ -68,13 +68,16 @@ const avatarSrc = assetPath(author.avatar);
 </section>
 
 {introVideo && (
-  <section class="py-4 sm:py-6">
-    <div class="surface-card overflow-hidden rounded-[var(--radius-card)]">
+  <section class="py-4 sm:py-6 flex justify-center">
+    <div class="relative w-48 h-48 sm:w-64 sm:h-64 rounded-full overflow-hidden border-4 border-primary/20 shadow-lg group">
       <video
         src={assetPath(introVideo)}
         controls
+        autoplay
+        muted
+        loop
         playsinline
-        class="w-full"
+        class="w-full h-full object-cover rounded-full"
         aria-label={locale === 'es' ? 'Video de introducción' : locale === 'zh-cn' ? '介绍视频' : 'Introduction video'}
       >
         {locale === 'es' ? 'Tu navegador no soporta el elemento de video.' : locale === 'zh-cn' ? '您的浏览器不支持 video 元素。' : 'Your browser does not support the video element.'}
