@@ -1,0 +1,47 @@
+---
+// src/components/Hero.astro
+import { Image } from 'astro:assets';
+// IMPORTANTE: Cambia 'jairo-avatar.png' por el nombre real de tu archivo
+import avatarImage from '../assets/avatar.JPEG.jpeg';
+
+const name = "JAIRO BAQUERO";
+const title = "SOFTWARE ENGINEER | FULL-STACK DEVELOPER";
+const description = "Transforming ideas into elegant code. Connect with me to build something remarkable.";
+---
+
+<section class="flex flex-col items-center justify-center gap-8 py-16 text-center bg-gradient-to-r from-blue-50 to-yellow-50 md:flex-row md:text-left md:py-24">
+  <!-- Contenedor del Avatar -->
+  <div class="flex-shrink-0">
+    <Image
+      src={avatarImage}
+      alt={`Avatar de ${name}`}
+      width={250} // Ancho máximo
+      height={250} // Alto máximo
+      loading="eager" // Carga la imagen inmediatamente (esencial para el Hero)
+      class="rounded-full border-4 border-white shadow-lg w-48 h-48 md:w-64 md:h-64 object-cover"
+    />
+  </div>
+
+  <!-- Contenedor del Texto -->
+  <div class="flex flex-col gap-4 max-w-xl">
+    <p class="text-sm font-semibold text-gray-600 uppercase tracking-widest">INTRODUCCIÓN</p>
+    <h1 class="text-5xl font-extrabold text-gray-900 tracking-tight md:text-6xl">
+      {name}
+    </h1>
+    <p class="text-xl font-medium text-blue-700">
+      {title}
+    </p>
+    <p class="text-base text-gray-700 leading-relaxed">
+      {description}
+    </p>
+    
+    <div class="mt-4">
+      <a
+        href="#contacto"
+        class="inline-block px-8 py-3 bg-gray-900 text-white font-semibold rounded-full shadow hover:bg-gray-700 transition duration-300"
+      >
+        CONÓCEME MÁS
+      </a>
+    </div>
+  </div>
+</section>
