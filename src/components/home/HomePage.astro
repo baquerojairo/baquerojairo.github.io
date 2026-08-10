@@ -17,9 +17,10 @@ interface HomeSection {
 interface Props {
   locale: Locale;
   sections: HomeSection[];
+  introVideo?: string;
 }
 
-const { locale, sections } = Astro.props;
+const { locale, sections, introVideo } = Astro.props;
 const { author } = siteConfig;
 
 function assetPath(path: string) {
@@ -65,6 +66,22 @@ const avatarSrc = assetPath(author.avatar);
     </div>
   </div>
 </section>
+
+{introVideo && (
+  <section class="py-4 sm:py-6">
+    <div class="surface-card overflow-hidden rounded-[var(--radius-card)]">
+      <video
+        src={assetPath(introVideo)}
+        controls
+        playsinline
+        class="w-full"
+        aria-label={locale === 'es' ? 'Video de introducción' : locale === 'zh-cn' ? '介绍视频' : 'Introduction video'}
+      >
+        {locale === 'es' ? 'Tu navegador no soporta el elemento de video.' : locale === 'zh-cn' ? '您的浏览器不支持 video 元素。' : 'Your browser does not support the video element.'}
+      </video>
+    </div>
+  </section>
+)}
 
 {sections.map((section) => (
   section.entries.length > 0 && (

@@ -28,5 +28,5 @@ const sections = await Promise.all(Object.entries(contentTypes)
 ---
 
 <BaseLayout title={siteConfig.name} description={siteConfig.description} locale={locale}>
-  <HomePage locale={locale} sections={sections} />
+  <HomePage locale={locale} sections={sections} introVideo="/videos/intro.mp4" />
 </BaseLayout>

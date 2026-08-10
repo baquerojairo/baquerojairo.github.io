@@ -5,8 +5,6 @@ import { contentTypes } from '../config/content';
 import { getLocalePath } from '../config/i18n';
 import { siteConfig } from '../config/site';
 import { getLocalizedEntries } from '../lib/content/entries';
-import { Image } from 'astro:assets';
-import avatarImg from '../assets/avatar.png'; // Asegúrate de tener la imagen en src/assets/
 
 const locale = 'en';
 const sections = await Promise.all(Object.entries(contentTypes)
@@ -26,32 +24,5 @@ const sections = await Promise.all(Object.entries(contentTypes)
 ---
 
 <BaseLayout title={siteConfig.name} description={siteConfig.description} locale={locale}>
-  
-  <!-- SECCIÓN DE PRESENTACIÓN -->
-  <section class="flex flex-col md:flex-row items-center gap-6 mb-12 text-center md:text-left">
-    <Image 
-      src={avatarImg} 
-      alt="Jairo Baquero Avatar" 
-      width={160} 
-      height={160} 
-      class="w-32 h-32 md:w-40 md:h-40 rounded-full border-4 border-blue-500 shadow-md object-cover"
-    />
-    <div>
-      <h1 class="text-3xl md:text-5xl font-bold">Jairo Baquero</h1>
-      <p class="text-lg text-gray-600 dark:text-gray-400 mt-2">Software Engineer | Full-Stack Developer</p>
-    </div>
-  </section>
-
-  <!-- VIDEO EXISTENTE -->
-  <video
-    src="/videos/intro.mp4"
-    controls
-    playsinline
-    class="w-full rounded-lg mb-8"
-  >
-    Tu navegador no soporta el elemento de video.
-  </video>
-
-  <!-- COMPONENTE HOMEPAGE -->
-  <HomePage locale={locale} sections={sections} />
+  <HomePage locale={locale} sections={sections} introVideo="/videos/intro.mp4" />
 </BaseLayout>

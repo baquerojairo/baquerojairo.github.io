@@ -1,23 +1,25 @@
 import type { Locale } from './i18n';
 
 export const siteConfig = {
-  name: 'Astro Narrow',
-  shortName: 'Astro Narrow',
-  description: 'A content-focused Astro theme inspired by Hugo Narrow.',
+  name: 'Jairo Baquero',
+  shortName: 'JB',
+  description: 'Portafolio de Jairo Esteban Baquero, Ingeniero de Software y Desarrollador Full-Stack.',
   author: {
-    name: 'Astro Narrow',
+    name: 'Jairo Esteban Baquero',
     title: {
-      en: 'A clean and minimal Astro theme',
-      'zh-cn': '一个干净克制的 Astro 主题'
+      en: 'Software Engineer | Full-Stack Developer',
+      es: 'Ingeniero de Software | Desarrollador Full-Stack',
+      'zh-cn': '软件工程师 | 全栈开发者'
     },
     description: {
-      en: 'Writing, projects, and notes — a compact space for ideas that keep their shape.',
-      'zh-cn': '写作、项目与笔记 —— 一个保持克制、注重结构感的内容空间。'
+      en: 'Transforming ideas into elegant code. Here you’ll find my projects, posts, and journey as a developer.',
+      es: 'Transformando ideas en código elegante. Aquí encontrarás mis proyectos, publicaciones y mi camino como desarrollador.',
+      'zh-cn': '将想法转化为优雅的代码。这里有我的项目、文章和开发旅程。'
     },
-    avatar: '/favicon.svg',
+    avatar: '/avatar.jpeg',
     social: [
-      { name: 'GitHub', url: 'https://github.com/', icon: 'simple-icons:github' },
-      { name: 'Email', url: 'mailto:hello@example.com', icon: 'lucide:mail' }
+      { name: 'GitHub', url: 'https://github.com/baquerojairo', icon: 'simple-icons:github' },
+      { name: 'Email', url: 'mailto:baquerojairo@gmail.com', icon: 'lucide:mail' }
     ]
   },
   contentWidth: '56rem',
