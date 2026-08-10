@@ -23,13 +23,13 @@ export default defineConfig({
   site: 'https://baquerojairo.github.io',
   ...(base ? { base } : {}),
   i18n: {
-    locales: ['en', 'zh-cn'],
-    defaultLocale: 'en',
-    routing: {
-      prefixDefaultLocale: false,
-      redirectToDefaultLocale: false
-    }
-  },
+  locales: ['en', 'es', 'zh-cn'],
+  defaultLocale: 'en',
+  routing: {
+    prefixDefaultLocale: false,
+    redirectToDefaultLocale: false
+  }
+},
   integrations: [icon(), expressiveCode(ecConfig)],
   markdown: {
     processor: unified({
