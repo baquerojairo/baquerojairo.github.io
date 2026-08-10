@@ -24,5 +24,13 @@ const sections = await Promise.all(Object.entries(contentTypes)
 ---
 
 <BaseLayout title={siteConfig.name} description={siteConfig.description} locale={locale}>
+  <video
+    src="/videos/intro.mp4"
+    controls
+    playsinline
+    class="w-full rounded-lg mb-8"
+  >
+    Tu navegador no soporta el elemento de video.
+  </video>
   <HomePage locale={locale} sections={sections} />
 </BaseLayout>
