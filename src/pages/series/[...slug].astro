@@ -10,27 +10,27 @@ import { getLocalizedSeries, type ResolvedSeries } from '../../lib/content/serie
 import { useTranslations } from '../../i18n/utils';
 
 export async function getStaticPaths() {
-  const series = await getLocalizedSeries('en');
+  const series = await getLocalizedSeries('es');
   return series.map((item) => ({ params: { slug: item.slug }, props: { item } }));
 }
 
 const { item } = Astro.props as { item: ResolvedSeries };
 const { Content } = await render(item.entry);
-const t = useTranslations('en');
+const t = useTranslations('es');
 ---
 
-<BaseLayout title={item.entry.data.title} description={item.entry.data.description} locale="en">
+<BaseLayout title={item.entry.data.title} description={item.entry.data.description} locale="es">
   <Breadcrumbs
-    locale="en"
+    locale="es"
     items={[
-      { label: siteConfig.shortName, href: getLocalePath('en', '/'), icon: 'lucide:home' },
-      { label: t('series.title'), href: getLocalePath('en', '/series/'), icon: 'lucide:list-ordered' },
+      { label: siteConfig.shortName, href: getLocalePath('es', '/'), icon: 'lucide:home' },
+      { label: t('series.title'), href: getLocalePath('es', '/series/'), icon: 'lucide:list-ordered' },
       { label: item.entry.data.title, icon: 'lucide:book-open' }
     ]}
   />
-  <PageHeader title={item.entry.data.title} description={item.entry.data.description} locale="en" />
+  <PageHeader title={item.entry.data.title} description={item.entry.data.description} locale="es" />
   <article class="prose max-w-none">
     <Content />
   </article>
-  <SeriesChapterList chapters={item.chapters} locale="en" />
+  <SeriesChapterList chapters={item.chapters} locale="es" />
 </BaseLayout>

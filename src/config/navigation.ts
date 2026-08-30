@@ -10,12 +10,12 @@ export type NavigationConfigItem = string | {
 
 const systemRoutes = {
   archives: {
-    label: { en: 'Archives', es: 'Archivo', 'zh-cn': '归档' },
+    label: { es: 'Archivo' },
     href: '/archives/',
     icon: 'lucide:archive'
   },
   series: {
-    label: { en: 'Series', es: 'Series', 'zh-cn': '系列' },
+    label: { es: 'Series' },
     href: '/series/',
     icon: 'lucide:list-ordered'
   }

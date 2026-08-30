@@ -7,14 +7,10 @@ export const siteConfig = {
   author: {
     name: 'Jairo Esteban Baquero',
     title: {
-      en: 'Software Engineer | Full-Stack Developer',
-      es: 'Ingeniero de Software | Desarrollador Full-Stack',
-      'zh-cn': '软件工程师 | 全栈开发者'
+      es: 'Ingeniero de Software | Desarrollador Full-Stack'
     },
     description: {
-      en: 'Transforming ideas into elegant code. Here you’ll find my projects, posts, and journey as a developer.',
-      es: 'Transformando ideas en código elegante. Aquí encontrarás mis proyectos, publicaciones y mi camino como desarrollador.',
-      'zh-cn': '将想法转化为优雅的代码。这里有我的项目、文章和开发旅程。'
+      es: 'Transformando ideas en código elegante. Aquí encontrarás mis proyectos, publicaciones y mi camino como desarrollador.'
     },
     avatar: '/avatar.jpeg',
     social: [
