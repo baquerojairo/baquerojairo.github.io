@@ -1,0 +1,77 @@
+---
+/**
+ * src/pages/evidencias/normalizacion.astro
+ * Subsección: Normalización
+ */
+import BaseLayout from '../../components/layout/BaseLayout.astro';
+import PageHeader from '../../components/content/PageHeader.astro';
+import EvidenciaCard from '../../components/content/EvidenciaCard.astro';
+import { getCollection } from 'astro:content';
+import { getLocalePath } from '../../config/i18n';
+
+const locale = 'es';
+
+const evidencias = await getCollection('evidencias', ({ data }) =>
+  !data.draft && data.category === 'normalizacion'
+);
+evidencias.sort((a, b) => {
+  const da = a.data.pubDate ? a.data.pubDate.getTime() : 0;
+  const db = b.data.pubDate ? b.data.pubDate.getTime() : 0;
+  return db - da;
+});
+---
+
+<BaseLayout
+  title="Normalización – Evidencias | Bases de Datos I"
+  description="Ejercicios de dependencias funcionales y formas normales (1FN, 2FN, 3FN, BCNF)."
+  locale={locale}
+>
+  <PageHeader
+    title="Normalización"
+    description="Ejercicios de dependencias funcionales y formas normales (1FN, 2FN, 3FN, BCNF)."
+    locale={locale}
+  />
+
+  <div class="mb-6">
+    <a
+      href={getLocalePath(locale, '/evidencias/')}
+      class="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary transition-colors"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+      </svg>
+      Volver a Evidencias
+    </a>
+  </div>
+
+  {evidencias.length === 0 ? (
+    <div class="rounded-[var(--radius-card)] border border-border bg-muted/40 p-10 text-center text-muted-foreground">
+      <p class="text-lg font-medium">Próximamente</p>
+      <p class="mt-1 text-sm">Los trabajos de esta sección se publicarán pronto.</p>
+    </div>
+  ) : (
+    <div class="space-y-8">
+      {evidencias.map((ev) => (
+        <section>
+          <h2 class="mb-4 text-xl font-bold border-b border-border pb-2 text-foreground">
+            {ev.data.title}
+          </h2>
+          {ev.data.description && (
+            <p class="mb-4 text-sm text-muted-foreground">{ev.data.description}</p>
+          )}
+          <div class="grid gap-4 sm:grid-cols-2">
+            {ev.data.items.map((item) => (
+              <EvidenciaCard
+                title={item.title}
+                description={item.description}
+                driveUrl={item.driveUrl}
+                embed={item.embed}
+                date={ev.data.pubDate}
+              />
+            ))}
+          </div>
+        </section>
+      ))}
+    </div>
+  )}
+</BaseLayout>

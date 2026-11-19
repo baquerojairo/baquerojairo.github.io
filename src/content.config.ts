@@ -60,9 +60,31 @@ const series = defineCollection({
   })
 });
 
+const evidencias = defineCollection({
+  loader: glob({ base: './src/content/evidencias', pattern: '**/*.{md,mdx}' }),
+  schema: z.object({
+    title: z.string(),
+    description: z.string().optional(),
+    pubDate: z.coerce.date().optional(),
+    draft: z.boolean().default(false),
+    lang: z.enum(['es']).optional(),
+    // Categoría: modelado | normalizacion | sql | proyecto
+    category: z.enum(['modelado', 'normalizacion', 'sql', 'proyecto']),
+    // Lista de trabajos con enlace a Drive
+    items: z.array(z.object({
+      title: z.string(),
+      description: z.string().optional(),
+      driveUrl: z.string().url(),
+      // ¿Incrustar iframe de previsualización? (solo funciona con archivos Drive compatibles)
+      embed: z.boolean().default(false)
+    })).default([])
+  })
+});
+
 export const collections = {
   posts,
   projects,
   pages,
-  series
+  series,
+  evidencias
 };

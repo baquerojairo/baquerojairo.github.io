@@ -1,0 +1,92 @@
+---
+/**
+ * src/pages/evidencias/index.astro
+ * Página principal de Evidencias de Bases de Datos I.
+ * Muestra las 4 subsecciones como tarjetas de acceso rápido.
+ */
+import BaseLayout from '../../components/layout/BaseLayout.astro';
+import PageHeader from '../../components/content/PageHeader.astro';
+import { getCollection } from 'astro:content';
+import { getLocalePath } from '../../config/i18n';
+
+const locale = 'es';
+
+// Leemos todas las evidencias publicadas
+const allEvidencias = await getCollection('evidencias', ({ data }) => !data.draft);
+
+// Subsecciones del menú Evidencias
+const sections = [
+  {
+    id: 'modelado',
+    label: 'Modelo Entidad Relación Extendido',
+    icon: '🗂️',
+    description: 'Talleres, quices y ejercicios de modelado conceptual con diagramas MER y MER-E.',
+    href: getLocalePath(locale, '/evidencias/modelado/')
+  },
+  {
+    id: 'normalizacion',
+    label: 'Normalización',
+    icon: '📐',
+    description: 'Ejercicios de dependencias funcionales y formas normales (1FN, 2FN, 3FN, BCNF).',
+    href: getLocalePath(locale, '/evidencias/normalizacion/')
+  },
+  {
+    id: 'sql',
+    label: 'SQL',
+    icon: '💾',
+    description: 'Consultas, DDL, DML y procedimientos en SQL.',
+    href: getLocalePath(locale, '/evidencias/sql/')
+  },
+  {
+    id: 'proyecto',
+    label: 'Proyecto Final',
+    icon: '🏆',
+    description: 'Proyecto integrador de la asignatura Bases de Datos I.',
+    href: getLocalePath(locale, '/evidencias/proyecto/')
+  }
+];
+
+// Cuenta cuántos trabajos hay por categoría
+const countByCategory = (cat: string) =>
+  allEvidencias.filter((e) => e.data.category === cat).length;
+---
+
+<BaseLayout
+  title="Evidencias – Bases de Datos I"
+  description="Trabajos académicos de la asignatura Bases de Datos I: modelado MER, normalización, SQL y proyecto final."
+  locale={locale}
+>
+  <PageHeader
+    title="Evidencias"
+    description="Trabajos académicos de la asignatura Bases de Datos I."
+    locale={locale}
+  />
+
+  <div class="grid gap-4 sm:grid-cols-2">
+    {sections.map((s) => {
+      const count = countByCategory(s.id);
+      return (
+        <a
+          href={s.href}
+          class="group flex flex-col gap-3 rounded-[var(--radius-card)] border border-border bg-card p-6 shadow-[var(--surface-shadow)] transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-[var(--surface-shadow-strong)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/25"
+        >
+          <div class="flex items-center gap-3">
+            <span class="text-2xl" aria-hidden="true">{s.icon}</span>
+            <h2 class="text-lg font-semibold leading-snug text-foreground transition-colors group-hover:text-primary">
+              {s.label}
+            </h2>
+          </div>
+          <p class="text-sm text-muted-foreground leading-relaxed">{s.description}</p>
+          <div class="mt-auto flex items-center justify-between">
+            <span class="text-xs text-muted-foreground">
+              {count > 0 ? `${count} ${count === 1 ? 'trabajo' : 'trabajos'}` : 'Próximamente'}
+            </span>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-muted-foreground transition-transform group-hover:translate-x-1 group-hover:text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+          </div>
+        </a>
+      );
+    })}
+  </div>
+</BaseLayout>
