@@ -14,13 +14,25 @@ interface HomeSection {
   entries: Array<CollectionEntry<any>>;
 }
 
+export interface EvidenciaApartado {
+  id: string;
+  title: string;
+  icon: string;
+  description: string;
+  href: string;
+  badge: string;
+  highlight?: boolean;
+}
+
 interface Props {
   locale: Locale;
   sections: HomeSection[];
   introVideo?: string;
+  evidenciasApartados?: EvidenciaApartado[];
+  evidenciasHref?: string;
 }
 
-const { locale, sections, introVideo } = Astro.props;
+const { locale, sections, introVideo, evidenciasApartados, evidenciasHref } = Astro.props;
 const { author } = siteConfig;
 
 function assetPath(path: string) {
@@ -82,6 +94,57 @@ const avatarSrc = assetPath(author.avatar);
       >
         {locale === 'es' ? 'Tu navegador no soporta el elemento de video.' : locale === 'zh-cn' ? '您的浏览器不支持 video 元素。' : 'Your browser does not support the video element.'}
       </video>
+    </div>
+  </section>
+)}
+
+{evidenciasApartados && evidenciasApartados.length > 0 && (
+  <section class="py-8">
+    <div class="mb-4 flex items-end justify-between gap-4">
+      <div>
+        <h2 class="text-2xl font-semibold">Evidencias – Bases de Datos I</h2>
+        <p class="mt-1 text-sm text-muted-foreground">
+          Acceso directo a las evidencias académicas: modelado conceptual, normalización, SQL y proyecto final.
+        </p>
+      </div>
+      {evidenciasHref && <ViewAll href={evidenciasHref} locale={locale} />}
+    </div>
+
+    <div class="grid gap-4 sm:grid-cols-2">
+      {evidenciasApartados.map((item) => (
+        <a
+          href={item.href}
+          class="group flex flex-col gap-3 rounded-[var(--radius-card)] border border-border bg-card p-5 shadow-[var(--surface-shadow)] transition-all duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-[var(--surface-shadow-strong)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/25"
+        >
+          <div class="flex items-center justify-between gap-3">
+            <div class="flex items-center gap-3">
+              <span class="text-2xl" aria-hidden="true">{item.icon}</span>
+              <h3 class="text-base font-semibold leading-snug text-foreground transition-colors group-hover:text-primary">
+                {item.title}
+              </h3>
+            </div>
+            <span class:list={[
+              'rounded-full px-2.5 py-0.5 text-xs font-medium',
+              item.highlight
+                ? 'bg-primary/10 text-primary border border-primary/20'
+                : 'bg-muted text-muted-foreground border border-border'
+            ]}>
+              {item.badge}
+            </span>
+          </div>
+
+          <p class="text-xs text-muted-foreground leading-relaxed">
+            {item.description}
+          </p>
+
+          <div class="mt-auto flex items-center justify-end text-xs font-medium text-primary">
+            <span>Ingresar al apartado</span>
+            <svg xmlns="http://www.w3.org/2000/svg" class="ml-1 h-3.5 w-3.5 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+          </div>
+        </a>
+      ))}
     </div>
   </section>
 )}

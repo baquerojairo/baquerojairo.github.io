@@ -44,10 +44,10 @@ export const contentTypes = {
     gridColumns: 3,
     home: {
       enabled: true,
-      limit: 3,
-      featuredOnly: true,
+      limit: 6,
+      featuredOnly: false,
       title: {
-        es: 'Proyectos destacados'
+        es: 'Proyectos y Diagramas MER'
       }
     }
   }

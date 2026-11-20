@@ -1,12 +1,57 @@
 ---
 import BaseLayout from '../components/layout/BaseLayout.astro';
-import HomePage from '../components/home/HomePage.astro';
+import HomePage, { type EvidenciaApartado } from '../components/home/HomePage.astro';
 import { contentTypes } from '../config/content';
 import { getLocalePath } from '../config/i18n';
 import { siteConfig } from '../config/site';
 import { getLocalizedEntries } from '../lib/content/entries';
+import { getCollection } from 'astro:content';
 
 const locale = 'es';
+
+const allEvidencias = await getCollection('evidencias', ({ data }) => !data.draft);
+const countNormalizacion = allEvidencias.filter((e) => e.data.category === 'normalizacion').length;
+const countSql = allEvidencias.filter((e) => e.data.category === 'sql').length;
+
+const evidenciasApartados: EvidenciaApartado[] = [
+  {
+    id: 'modelado',
+    title: 'Modelo Entidad Relación Extendido',
+    icon: '🗂️',
+    description: 'Talleres, quices y diagramas MER/MER-E de modelado conceptual.',
+    href: getLocalePath(locale, '/evidencias/modelado/'),
+    badge: 'Disponible',
+    highlight: true
+  },
+  {
+    id: 'normalizacion',
+    title: 'Normalización',
+    icon: '📐',
+    description: 'Dependencias funcionales y formas normales (1FN, 2FN, 3FN, BCNF).',
+    href: getLocalePath(locale, '/evidencias/normalizacion/'),
+    badge: countNormalizacion > 0 ? 'Disponible' : 'Próximamente',
+    highlight: countNormalizacion > 0
+  },
+  {
+    id: 'sql',
+    title: 'SQL',
+    icon: '💾',
+    description: 'Consultas avanzadas, DDL, DML y procedimientos en SQL.',
+    href: getLocalePath(locale, '/evidencias/sql/'),
+    badge: countSql > 0 ? 'Disponible' : 'Próximamente',
+    highlight: countSql > 0
+  },
+  {
+    id: 'proyecto',
+    title: 'Proyecto Final',
+    icon: '🏆',
+    description: 'Proyecto integrador final de la asignatura Bases de Datos I.',
+    href: getLocalePath(locale, '/evidencias/proyecto/'),
+    badge: 'Entrega Lista',
+    highlight: true
+  }
+];
+
 const sections = await Promise.all(Object.entries(contentTypes)
   .filter(([, config]) => config.home?.enabled)
   .map(async ([id, config]) => {
@@ -24,5 +69,11 @@ const sections = await Promise.all(Object.entries(contentTypes)
 ---
 
 <BaseLayout title={siteConfig.name} description={siteConfig.description} locale={locale}>
-  <HomePage locale={locale} sections={sections} introVideo="/videos/intro.mp4" />
+  <HomePage
+    locale={locale}
+    sections={sections}
+    introVideo="/videos/intro.mp4"
+    evidenciasApartados={evidenciasApartados}
+    evidenciasHref={getLocalePath(locale, '/evidencias/')}
+  />
 </BaseLayout>

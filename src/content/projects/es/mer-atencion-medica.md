@@ -4,7 +4,7 @@ description: "Modelado conceptual de consultas médicas con atributos compuestos
 pubDate: 2026-11-17
 cover: "/projects/mer-atencion-medica.jpg"
 tags: ["Bases de Datos", "MER", "Modelado de Datos"]
-featured: false
+featured: true
 links: []
 toc: false
 lang: "es"

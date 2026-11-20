@@ -4,7 +4,7 @@ description: "Modelado conceptual de una plataforma de contenido multimedia y st
 pubDate: 2026-11-17
 cover: "/projects/mer-plataforma-streaming.jpg"
 tags: ["Bases de Datos", "MER", "Modelado de Datos"]
-featured: false
+featured: true
 links: []
 toc: false
 lang: "es"

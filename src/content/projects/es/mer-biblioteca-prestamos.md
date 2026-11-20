@@ -4,7 +4,7 @@ description: "Modelado conceptual de biblioteca con distinción de títulos, eje
 pubDate: 2026-11-17
 cover: "/projects/mer-biblioteca-prestamos.jpg"
 tags: ["Bases de Datos", "MER", "Modelado de Datos"]
-featured: false
+featured: true
 links: []
 toc: false
 lang: "es"
