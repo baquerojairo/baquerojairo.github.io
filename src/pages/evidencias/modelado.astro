@@ -1,8 +1,13 @@
 ---
 /**
  * src/pages/evidencias/modelado.astro
- * Subsección: Modelo Entidad Relación Extendido (MER / MER-E)
- * Muestra todos los trabajos de categoría "modelado" agrupados aquí.
+ * Subsección: Modelo Entidad Relación (MER / MER-E)
+ *
+ * Muestra DOS fuentes en un único lugar:
+ *   1. Los trabajos de la colección "evidencias" con category="modelado"
+ *      (archivos con enlaces a Drive, talleres, quices, etc.)
+ *   2. Los proyectos de la colección "projects" que tienen el tag "MER"
+ *      (los 5 diagramas MER ya publicados con imagen local)
  */
 import BaseLayout from '../../components/layout/BaseLayout.astro';
 import PageHeader from '../../components/content/PageHeader.astro';
@@ -12,16 +17,21 @@ import { getLocalePath } from '../../config/i18n';
 
 const locale = 'es';
 
+// ── Fuente 1: evidencias con category="modelado" (Drive links) ──────────────
 const evidencias = await getCollection('evidencias', ({ data }) =>
   !data.draft && data.category === 'modelado'
 );
+evidencias.sort((a, b) =>
+  (b.data.pubDate?.getTime() ?? 0) - (a.data.pubDate?.getTime() ?? 0)
+);
 
-// Ordena del más reciente al más antiguo
-evidencias.sort((a, b) => {
-  const da = a.data.pubDate ? a.data.pubDate.getTime() : 0;
-  const db = b.data.pubDate ? b.data.pubDate.getTime() : 0;
-  return db - da;
-});
+// ── Fuente 2: proyectos de la colección "projects" con tag "MER" ─────────────
+const proyectosMER = await getCollection('projects', ({ data }) =>
+  !data.draft && (data.tags ?? []).includes('MER')
+);
+proyectosMER.sort((a, b) =>
+  (b.data.pubDate?.getTime() ?? 0) - (a.data.pubDate?.getTime() ?? 0)
+);
 ---
 
 <BaseLayout
@@ -36,7 +46,7 @@ evidencias.sort((a, b) => {
   />
 
   {/* Enlace de regreso */}
-  <div class="mb-6">
+  <div class="mb-8">
     <a
       href={getLocalePath(locale, '/evidencias/')}
       class="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary transition-colors"
@@ -48,35 +58,89 @@ evidencias.sort((a, b) => {
     </a>
   </div>
 
-  {evidencias.length === 0 ? (
-    <div class="rounded-[var(--radius-card)] border border-border bg-muted/40 p-10 text-center text-muted-foreground">
-      <p class="text-lg font-medium">Próximamente</p>
-      <p class="mt-1 text-sm">Los trabajos de esta sección se publicarán pronto.</p>
-    </div>
-  ) : (
-    <div class="space-y-8">
-      {evidencias.map((ev) => (
-        <section>
-          {/* Cada archivo .md es un "grupo" de trabajos con un título de sección */}
-          <h2 class="mb-4 text-xl font-bold border-b border-border pb-2 text-foreground">
-            {ev.data.title}
-          </h2>
-          {ev.data.description && (
-            <p class="mb-4 text-sm text-muted-foreground">{ev.data.description}</p>
-          )}
-          <div class="grid gap-4 sm:grid-cols-2">
-            {ev.data.items.map((item) => (
-              <EvidenciaCard
-                title={item.title}
-                description={item.description}
-                driveUrl={item.driveUrl}
-                embed={item.embed}
-                date={ev.data.pubDate}
-              />
-            ))}
-          </div>
-        </section>
-      ))}
-    </div>
-  )}
+  <div class="space-y-10">
+
+    {/* ── Sección 1: Trabajos de evidencias (Drive) ── */}
+    {evidencias.map((ev) => (
+      <section>
+        <h2 class="mb-4 border-b border-border pb-2 text-xl font-bold text-foreground">
+          {ev.data.title}
+        </h2>
+        {ev.data.description && (
+          <p class="mb-4 text-sm text-muted-foreground">{ev.data.description}</p>
+        )}
+        <div class="grid gap-4 sm:grid-cols-2">
+          {ev.data.items.map((item) => (
+            <EvidenciaCard
+              title={item.title}
+              description={item.description}
+              driveUrl={item.driveUrl}
+              embed={item.embed}
+              date={ev.data.pubDate}
+            />
+          ))}
+        </div>
+      </section>
+    ))}
+
+    {/* ── Sección 2: Diagramas MER (proyectos con imagen local) ── */}
+    {proyectosMER.length > 0 && (
+      <section>
+        <h2 class="mb-4 border-b border-border pb-2 text-xl font-bold text-foreground">
+          Diagramas MER – Ejercicios de clase
+        </h2>
+        <p class="mb-4 text-sm text-muted-foreground">
+          Ejercicios de modelado conceptual realizados en clase: plataforma de streaming,
+          sistema de biblioteca, aerolínea y atención médica.
+        </p>
+        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {proyectosMER.map((project) => (
+            <a
+              href={getLocalePath(locale, `/projects/${project.id.replace(/^es\//, '')}/`)}
+              class="group flex flex-col overflow-hidden rounded-[var(--radius-card)] border border-border bg-card shadow-[var(--surface-shadow)] transition-all duration-300 hover:-translate-y-1 hover:border-primary/25 hover:shadow-[var(--surface-shadow-strong)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/25"
+            >
+              {/* Imagen de previsualización */}
+              {project.data.cover && (
+                <div class="aspect-video overflow-hidden bg-muted">
+                  <img
+                    src={project.data.cover}
+                    alt=""
+                    class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                    loading="lazy"
+                  />
+                </div>
+              )}
+              <div class="flex flex-1 flex-col gap-2 p-4">
+                <h3 class="text-sm font-semibold leading-snug text-foreground transition-colors group-hover:text-primary">
+                  {project.data.title}
+                </h3>
+                {project.data.description && (
+                  <p class="text-xs text-muted-foreground leading-relaxed line-clamp-2">
+                    {project.data.description}
+                  </p>
+                )}
+                <div class="mt-auto pt-2">
+                  <span class="inline-flex items-center gap-1 text-xs font-medium text-primary">
+                    Ver diagrama
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 transition-transform group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                    </svg>
+                  </span>
+                </div>
+              </div>
+            </a>
+          ))}
+        </div>
+      </section>
+    )}
+
+    {/* Mensaje si no hay nada de ninguna fuente */}
+    {evidencias.length === 0 && proyectosMER.length === 0 && (
+      <div class="rounded-[var(--radius-card)] border border-border bg-muted/40 p-10 text-center text-muted-foreground">
+        <p class="text-lg font-medium">Próximamente</p>
+        <p class="mt-1 text-sm">Los trabajos de esta sección se publicarán pronto.</p>
+      </div>
+    )}
+
+  </div>
 </BaseLayout>

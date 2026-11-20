@@ -70,12 +70,13 @@ const evidencias = defineCollection({
     lang: z.enum(['es']).optional(),
     // Categoría: modelado | normalizacion | sql | proyecto
     category: z.enum(['modelado', 'normalizacion', 'sql', 'proyecto']),
-    // Lista de trabajos con enlace a Drive
+    // Lista de trabajos con enlace a Drive o URL interna del sitio
     items: z.array(z.object({
       title: z.string(),
       description: z.string().optional(),
-      driveUrl: z.string().url(),
-      // ¿Incrustar iframe de previsualización? (solo funciona con archivos Drive compatibles)
+      // Acepta URLs de Drive (https://...) o rutas internas (/projects/...)
+      driveUrl: z.string(),
+      // ¿Incrustar iframe de previsualización? (solo funciona con archivos Drive PDF/Docs)
       embed: z.boolean().default(false)
     })).default([])
   })
